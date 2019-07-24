@@ -6,7 +6,7 @@
 ### 基本思想 
 构建模型时将目标作为一个点——即目标BBox的中心点。采用关键点估计来找到中心点，并回归到其他目标属性，例如尺寸，3D位置，方向，姿态。  
 
-![different tasks](./CenterNet图片/objects_as_points_different_tasks.png)  
+![different tasks](./pictures/objects_as_points_different_tasks.png)  
 
 第一行：object detection任务，得到keypoint heatmap(W/R * H/R * C)，C为目标种类数, offset补偿下采样由于stride取整产生的偏差，回归得到目标尺寸   
 第二行：3D object detection任务，直接回归得到目标的深度信息，3D框的尺寸，目标朝向；  
@@ -24,23 +24,23 @@
 keypoint heatmap训练：  
 采用focal loss, 这个损失函数是在标准交叉熵损失基础上修改得到的。这个函数可以通过减少易分类样本的权重，使得模型在训练时更专注于难分类的样本。(参考https://blog.csdn.net/u014380165/article/details/77019084, https://arxiv.org/pdf/1708.02002.pdf)  
  
-![heatmap_loss](./CenterNet图片/focal_loss.png)
+![heatmap_loss](./pictures/focal_loss.png)
 
 local offset训练：  
 采用L1 loss  
   
-![offset_loss](./CenterNet图片/CenterNet_Loff.png)  
+![offset_loss](./pictures/CenterNet_Loff.png)  
   
 object size训练：
 采用L1 loss
 
-![size_loss](./CenterNet图片/CenterNet_Lsize.png)
+![size_loss](./pictures/CenterNet_Lsize.png)
 
 总的损失函数：  
 
-![loss](./CenterNet图片/CenterNet_Ldet.png)    
+![loss](./pictures/CenterNet_Ldet.png)    
 
-其中  ![](./CenterNet图片/loss系数.png)    
+其中  ![](./pictures/loss系数.png)    
   
 整个网络预测会在每个位置输出 C+4个值(即关键点类别C, 偏移量的x,y，尺寸的w,h)  
 
